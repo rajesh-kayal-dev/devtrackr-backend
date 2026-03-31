@@ -1,72 +1,11 @@
 import express from "express";
+import taskRoutes from "./routes/task.routes"
 
 const app = express();
 
 app.use(express.json());
 
-interface Task {
-    id:number,
-    title:string,
-    status: "pending" | "completed";
-}
-let tasks: Task[] = [];
-
-
-app.post("/tasks", (req, res) => {
-  const { title } = req.body;
-
-  const newTask: Task = {
-    id: Date.now(),
-    title,
-    status: "pending"
-  };
-
-  tasks.push(newTask);
-
-  res.json({
-    message: "Task created",
-    task: newTask
-  });
-});
-
-app.get("/tasks", (req, res) => {
-  res.json({
-    tasks: tasks
-  });
-});
-
-app.patch("/tasks/:id", (req, res) => {
-  const id = Number(req.params.id);
-
-  const task = tasks.find(t => t.id === id);
-
-  if (!task) {
-    return res.status(404).json({ message: "Task not found" });
-  }
-
-  task.status = "completed";
-
-  res.json({
-    message: "Task updated",
-    task
-  });
-});
-
-app.delete("/tasks/:id", (req, res) => {
-  const id = Number(req.params.id);
-
-  const initialLength = tasks.length;
-
-  tasks = tasks.filter(t => t.id !== id);
-
-  if (tasks.length === initialLength) {
-    return res.status(404).json({ message: "Task not found" });
-  }
-
-  res.json({
-    message: "Task deleted"
-  });
-});
+app.use("/tasks", taskRoutes);
 
 app.get("/", (req, res)=>{
     res.send("server is running")
