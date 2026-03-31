@@ -1,7 +1,9 @@
 interface Task {
-    id:number,
-    title:string,
+    id:number;
+    title:string;
     status: "pending" | "completed";
+    createdAt: Date;
+  completedAt?: Date;
 }
 
 let tasks: Task[] = [];
@@ -11,7 +13,8 @@ export const createTaskService = (title:string): Task =>{
   const newTask: Task = {
     id: Date.now(),
     title,
-    status: "pending"
+    status: "pending",
+    createdAt: new Date()
   };
 
   tasks.push(newTask);
