@@ -1,3 +1,6 @@
+import bcrypt from "bcrypt";
+
+
 interface User{
     id:number,
     email:string,
@@ -6,11 +9,13 @@ interface User{
 
 let users: User[] = [];
 
-export const createUserService = (email: string, password: string): User =>{
+export const createUserService = async (email: string, password: string) =>{
+    const hashedPassword = await bcrypt.hash(password,10);
+    
     const newuser: User = {
         id: Date.now(),
         email,
-        password
+        password: hashedPassword
     };
 
     users.push(newuser);
