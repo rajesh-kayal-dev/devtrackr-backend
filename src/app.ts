@@ -35,6 +35,23 @@ app.get("/tasks", (req, res) => {
   });
 });
 
+app.patch("/tasks/:id", (req, res) => {
+  const id = Number(req.params.id);
+
+  const task = tasks.find(t => t.id === id);
+
+  if (!task) {
+    return res.status(404).json({ message: "Task not found" });
+  }
+
+  task.status = "completed";
+
+  res.json({
+    message: "Task updated",
+    task
+  });
+});
+
 app.get("/", (req, res)=>{
     res.send("server is running")
 })
