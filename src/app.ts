@@ -52,6 +52,22 @@ app.patch("/tasks/:id", (req, res) => {
   });
 });
 
+app.delete("/tasks/:id", (req, res) => {
+  const id = Number(req.params.id);
+
+  const initialLength = tasks.length;
+
+  tasks = tasks.filter(t => t.id !== id);
+
+  if (tasks.length === initialLength) {
+    return res.status(404).json({ message: "Task not found" });
+  }
+
+  res.json({
+    message: "Task deleted"
+  });
+});
+
 app.get("/", (req, res)=>{
     res.send("server is running")
 })
