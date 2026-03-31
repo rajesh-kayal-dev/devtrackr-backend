@@ -6,7 +6,6 @@ import { findByEmail } from "../services/auth.service";
 export const login = (req:Request, res: Response) =>{
     const{email, password} = req.body;
 
-    //validation
     if(!email || !password){
         return res.status(400).json({
             message: "Email and password are required"
