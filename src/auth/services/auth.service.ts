@@ -16,3 +16,7 @@ export const createUserService = (email: string, password: string): User =>{
     users.push(newuser);
     return newuser;
 }
+
+export const findByEmail = (email: string) =>{
+    return users.find(u => u.email === email);
+}
