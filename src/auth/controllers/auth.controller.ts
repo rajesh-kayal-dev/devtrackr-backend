@@ -31,7 +31,7 @@ export const login = async (req:Request, res: Response) => {
         });
     }
     const token = Jwt.sign(
-        {userId: user.id},
+        {userId: user.id, role: user.role},
         "secretkey",
         {expiresIn: "1h"}
     );
