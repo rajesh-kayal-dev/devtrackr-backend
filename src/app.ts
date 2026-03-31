@@ -29,6 +29,11 @@ app.post("/tasks", (req, res) => {
   });
 });
 
+app.get("/tasks", (req, res) => {
+  res.json({
+    tasks: tasks
+  });
+});
 
 app.get("/", (req, res)=>{
     res.send("server is running")
