@@ -1,44 +1,37 @@
 import { Request, Response } from "express";
 
-interface Task {
-    id:number,
-    title:string,
-    status: "pending" | "completed";
-}
+import {
+  createTaskService,
+  getTaskService,
+  updateTaskService,
+  deleteTaskService
+} from "../services/task.service";
 
-let tasks: Task[] = [];
 
 export const createTask = (req: Request, res: Response) =>{
     const { title } = req.body;
 
-  const newTask: Task = {
-    id: Date.now(),
-    title,
-    status: "pending"
-  };
-
-  tasks.push(newTask);
+  const task = createTaskService(title);
 
   res.json({
     message: "Task created",
-    task: newTask
+    task
   });
 }
 
 export const getTask = (req: Request , res: Response) =>{
+  const tasks = getTaskService();
  res.json({ tasks });
 }
 
 export const updateTask = (req: Request , res: Response) =>{
 const id = Number(req.params.id);
 
-  const task = tasks.find(t => t.id === id);
+  const task = updateTaskService(id);
 
   if (!task) {
     return res.status(404).json({ message: "Task not found" });
   }
-
-  task.status = "completed";
 
   res.json({
     message: "Task updated",
@@ -48,11 +41,9 @@ const id = Number(req.params.id);
 export const deleteTask = (req: Request , res: Response) =>{
   const id = Number(req.params.id);
 
-  const initialLength = tasks.length;
+  const isDeleted = deleteTaskService(id);
 
-  tasks = tasks.filter(t => t.id !== id);
-
-  if (tasks.length === initialLength) {
+  if (!isDeleted) {
     return res.status(404).json({ message: "Task not found" });
   }
 
